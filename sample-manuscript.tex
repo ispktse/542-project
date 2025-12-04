@@ -1,0 +1,187 @@
+\documentclass[sigconf,authoryear]{acmart}
+
+\citestyle{acmauthoryear}
+\setcitestyle{authoryear,round}
+
+\title{Review Interaction Dynamics of Agentic vs.\ Human Pull Requests Across Programming Languages}
+
+\author{Po-Kai Tseng and Spandan Dey}
+\affiliation{
+  \institution{University of British Columbia Okanagan}
+  \city{Kelowna}
+  \country{Canada}
+}
+
+\begin{document}
+
+\maketitle
+
+% ============================================================
+% 1. INTRODUCTION
+% ============================================================
+
+\section{Introduction}
+
+Automated coding agents are becoming increasingly active contributors in open-source ecosystems, generating pull requests (PRs) that require human review. While prior work has examined correctness of AI-generated patches, less is known about the \textit{review dynamics} that emerge when maintainers evaluate agent-authored contributions. This report presents Milestone~2 progress on two research questions: (1) how reviewers interact with Agentic vs.\ Human PRs, and (2) whether PR lifetime and review complexity differ across programming languages.
+
+% ============================================================
+% 2. RESEARCH QUESTION 1
+% ============================================================
+
+\section{Research Question 1}
+
+\textbf{RQ1: How do reviewer interaction patterns differ between Agentic and Human pull requests across programming languages?}
+
+We examine four dimensions:
+\begin{itemize}
+    \item discussion comment count,
+    \item formal review actions,
+    \item inline review comments,
+    \item reopen events.
+\end{itemize}
+
+% ============================================================
+% 3. DATA AND METHODOLOGY (RQ1)
+% ============================================================
+
+\section{Data and Methodology}
+
+We use six AIDev tables covering PR metadata, repository language, comments, review actions, inline feedback, and lifecycle events. After merging on \texttt{repo\_id} and \texttt{pull\_request\_id}, reviewer-interaction metrics were computed and aggregated by language and author type.
+
+% ============================================================
+% 4. PARTIAL RESULTS (RQ1)
+% ============================================================
+
+\section{Results for RQ1}
+
+\begin{table}[h]
+\centering
+\caption{Reviewer Interaction Metrics (Partial Results for RQ1)}
+\label{tab:rq1results}
+\begin{tabular}{l l r r r r r}
+\toprule
+Lang & Author & \#PRs & Comm & Rev & Inline & Reopen \\
+\midrule
+Python & Human & 12841 & 1.32 & 0.87 & 0.41 & 0.021 \\
+Python & Agent & 1553 & 1.94 & 1.15 & 0.62 & 0.048 \\
+JS & Human & 10320 & 1.10 & 0.72 & 0.30 & 0.018 \\
+JS & Agent & 1204 & 1.68 & 1.06 & 0.57 & 0.044 \\
+Go & Human & 4112 & 0.98 & 0.61 & 0.22 & 0.014 \\
+Go & Agent & 398 & 1.41 & 0.84 & 0.33 & 0.027 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Key Observations}
+
+Agentic PRs receive:
+\begin{itemize}
+    \item more comments and review actions,
+    \item higher inline suggestions,
+    \item nearly double the reopen rate.
+\end{itemize}
+
+These trends indicate heightened reviewer scrutiny.
+
+% ============================================================
+% 5. DISCUSSION FOR RQ1
+% ============================================================
+
+\section{Discussion for RQ1}
+
+Reviewers inspect Agentic PRs more deeply, providing more inline comments and requesting more iteration. This highlights emerging frictions as AI-generated contributions enter human review workflows.
+
+% ============================================================
+% 6. RESEARCH QUESTION 2
+% ============================================================
+
+\section{Research Question 2}
+
+\textbf{RQ2: Do Agentic PRs remain open longer or receive different levels of reviewer interaction across languages?}
+
+We analyze:
+\begin{itemize}
+    \item PR lifetime,
+    \item reviewer comment count,
+    \item formal review-event count,
+    \item PR text complexity.
+\end{itemize}
+
+% ============================================================
+% 7. METHODOLOGY FOR RQ2
+% ============================================================
+
+\section{Methodology for RQ2}
+
+Five AIDev tables were merged using \texttt{repo\_id} and \texttt{user\_id}. Agent labels were standardized into a binary variable. Timestamps were normalized, and PR lifetime computed from \texttt{created\_at} to the earlier of \texttt{merged\_at} or \texttt{closed\_at}. Text complexity was measured as title+body length. Reviewer activity was computed from comment and review tables.
+
+% ============================================================
+% 8. RESULTS FOR RQ2
+% ============================================================
+
+\section{Results for RQ2}
+
+\subsection{PR Lifetime Across Languages}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{PR_Lifetime.png}
+    \caption{Average PR lifetime across languages.}
+    \label{fig:lifetime}
+\end{figure}
+
+Rust, Go, and TypeScript show longer-lived PRs. No consistent difference appears between Agentic and Human PRs.
+
+\subsection{Reviewer Comments}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{Comments.png}
+    \caption{Reviewer comment counts across languages.}
+    \label{fig:comments}
+\end{figure}
+
+Python and TypeScript exhibit the highest reviewer attention. Differences between Agentic and Human PRs remain smaller than cross-language variation.
+
+% ============================================================
+% 9. INTERPRETATION FOR RQ2
+% ============================================================
+
+\section{Interpretation for RQ2}
+
+Findings indicate:
+\begin{itemize}
+    \item PR lifetime varies mainly by ecosystem norms.
+    \item Reviewer activity levels depend more on community practices than authorship.
+    \item Agentic PRs follow existing language-specific review cultures.
+\end{itemize}
+
+% ============================================================
+% 10. REMAINING WORK
+% ============================================================
+
+\section{Remaining Work}
+
+Milestone~3 will address:
+
+\textit{Do merge outcomes differ between Agentic and Human PRs after controlling for PR size and reviewer activity?}
+
+Planned analyses include logistic regression, bootstrap intervals, and per-language comparisons.
+
+% ============================================================
+% 11. GITHUB + DISCLOSURE
+% ============================================================
+
+\section{GitHub Repository}
+
+Code and analysis are available at:  
+\url{https://github.com/ispktse/542-project}
+
+\section{GenAI Disclosure}
+
+ChatGPT assisted with formatting and writing. All analysis was performed by the authors.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
